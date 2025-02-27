@@ -10,7 +10,7 @@ import { toggleLikeMeme, isMemeLiked } from "@/lib/storage";
 import { useToast } from "@/hooks/use-toast";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Meme } from "@/types/meme";
-import Image from "next/image";
+import { Image } from "@/components/ui/image";
 
 interface Comment {
   id: string;
@@ -86,9 +86,6 @@ export default function MemeDetails() {
     });
   };
 
-  // Check if the URL is a base64 data URL
-  const isBase64Image = meme?.url.startsWith("data:");
-
   return (
     <main>
       <div className="container mx-auto px-4 py-8">
@@ -104,22 +101,14 @@ export default function MemeDetails() {
 
           {meme ? (
             <div className="bg-card rounded-lg shadow-lg overflow-hidden">
-              {isBase64Image ? (
-                <img
-                  src={meme.url}
-                  alt={meme.title}
-                  className="w-full h-auto object-contain max-h-[80vh]"
-                />
-              ) : (
-                <Image
-                  src={meme.url}
-                  alt={meme.title}
-                  width={1200}
-                  height={800}
-                  className="w-full h-auto object-contain max-h-[80vh]"
-                  priority
-                />
-              )}
+              <Image
+                src={meme.url}
+                alt={meme.title}
+                width={1200}
+                height={800}
+                className="w-full h-auto object-contain max-h-[80vh]"
+                priority
+              />
 
               <div className="p-4 sm:p-6">
                 <h1 className="text-xl sm:text-2xl font-bold mb-4">

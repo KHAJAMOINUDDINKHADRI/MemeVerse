@@ -21,7 +21,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { Meme, MemeCategory, SortOption } from "@/types/meme";
+import { Meme } from "@/types/meme";
 
 // Custom hook for debouncing
 function useDebounce<T>(value: T, delay: number): T {
