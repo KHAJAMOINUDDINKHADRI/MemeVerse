@@ -1,11 +1,9 @@
 "use client";
 
 import React from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function HeroSection() {
-  const router = useRouter();
   return (
     <section className="relative py-16 sm:py-24 md:h-[60vh] flex flex-col items-center justify-center mx-auto overflow-hidden px-4">
       <div className="container mx-auto text-center">

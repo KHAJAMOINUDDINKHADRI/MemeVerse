@@ -11,6 +11,7 @@ import { Camera, User } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import MemeCard from "@/components/MemeCard";
 import Link from "next/link";
+import { Meme } from "@/types/meme";
 
 interface UserProfile {
   name: string;
@@ -25,8 +26,8 @@ export default function Profile() {
     bio: "",
     profilePic: "",
   });
-  const [uploadedMemes, setUploadedMemes] = useState<any[]>([]);
-  const [likedMemes, setLikedMemes] = useState<any[]>([]);
+  const [uploadedMemes, setUploadedMemes] = useState<Meme[]>([]);
+  const [likedMemes, setLikedMemes] = useState<Meme[]>([]);
   const [editing, setEditing] = useState(false);
   const [editedProfile, setEditedProfile] = useState(profile);
 
@@ -199,7 +200,7 @@ export default function Profile() {
                 </div>
               ) : (
                 <div className="text-center py-12 text-muted-foreground">
-                  <p>You haven't uploaded any memes yet.</p>
+                  <p>You haven&apos;t uploaded any memes yet.</p>
                   <Link href="/upload">
                     <Button variant="outline" className="mt-4">
                       Upload Your First Meme
@@ -218,7 +219,7 @@ export default function Profile() {
                 </div>
               ) : (
                 <div className="text-center py-12 text-muted-foreground">
-                  <p>You haven't liked any memes yet.</p>
+                  <p>You haven&apos;t liked any memes yet.</p>
                   <Link href="/explore">
                     <Button variant="outline" className="mt-4">
                       Explore Memes

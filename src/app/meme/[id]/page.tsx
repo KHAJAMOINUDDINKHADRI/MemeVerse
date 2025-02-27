@@ -9,6 +9,8 @@ import { getMemeById } from "@/lib/api";
 import { toggleLikeMeme, isMemeLiked } from "@/lib/storage";
 import { useToast } from "@/hooks/use-toast";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Meme } from "@/types/meme";
+import Image from "next/image";
 
 interface Comment {
   id: string;
@@ -17,23 +19,15 @@ interface Comment {
   created_at: string;
 }
 
-interface Meme {
-  id: string;
-  url: string;
-  title: string;
-  likes: number;
-}
-
 export default function MemeDetails() {
   const params = useParams();
   const id = params?.id as string;
   const router = useRouter();
   const { toast } = useToast();
-  const [meme, setMeme] = useState<any>(null);
+  const [meme, setMeme] = useState<Meme | null>(null);
   const [isLiked, setIsLiked] = useState(false);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState<Comment[]>([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchMeme = async () => {
@@ -50,20 +44,19 @@ export default function MemeDetails() {
           setComments(storedComments);
         }
       }
-      setLoading(false);
     };
 
     fetchMeme();
   }, [id]);
 
   const handleLike = () => {
-    if (!id) return;
+    if (!id || !meme) return;
     const newLikeStatus = toggleLikeMeme(id);
     setIsLiked(newLikeStatus);
-    setMeme((prev: Meme) => ({
-      ...prev,
-      likes: prev.likes + (newLikeStatus ? 1 : -1),
-    }));
+    setMeme({
+      ...meme,
+      likes: meme.likes + (newLikeStatus ? 1 : -1),
+    });
   };
 
   const handleComment = (e: React.FormEvent) => {
@@ -93,6 +86,9 @@ export default function MemeDetails() {
     });
   };
 
+  // Check if the URL is a base64 data URL
+  const isBase64Image = meme?.url.startsWith("data:");
+
   return (
     <main>
       <div className="container mx-auto px-4 py-8">
@@ -108,11 +104,22 @@ export default function MemeDetails() {
 
           {meme ? (
             <div className="bg-card rounded-lg shadow-lg overflow-hidden">
-              <img
-                src={meme.url}
-                alt={meme.title}
-                className="w-full h-auto object-contain max-h-[80vh]"
-              />
+              {isBase64Image ? (
+                <img
+                  src={meme.url}
+                  alt={meme.title}
+                  className="w-full h-auto object-contain max-h-[80vh]"
+                />
+              ) : (
+                <Image
+                  src={meme.url}
+                  alt={meme.title}
+                  width={1200}
+                  height={800}
+                  className="w-full h-auto object-contain max-h-[80vh]"
+                  priority
+                />
+              )}
 
               <div className="p-4 sm:p-6">
                 <h1 className="text-xl sm:text-2xl font-bold mb-4">

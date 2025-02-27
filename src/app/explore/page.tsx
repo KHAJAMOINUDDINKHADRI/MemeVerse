@@ -21,6 +21,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { Meme, MemeCategory, SortOption } from "@/types/meme";
 
 // Custom hook for debouncing
 function useDebounce<T>(value: T, delay: number): T {
@@ -56,7 +57,7 @@ const sortOptions = [
 const ITEMS_PER_PAGE = 12;
 
 export default function Explore() {
-  const [memes, setMemes] = useState<any[]>([]);
+  const [memes, setMemes] = useState<Meme[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [category, setCategory] = useState("all");
@@ -225,7 +226,7 @@ export default function Explore() {
           {/* Meme Grid */}
           {!loading && !error && currentMemes.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {currentMemes.map((meme, index) => (
+              {currentMemes.map((meme) => (
                 <div key={meme.id}>
                   <MemeCard meme={meme} />
                 </div>

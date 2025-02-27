@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Heart } from "lucide-react";
+import Image from "next/image";
+import { Meme } from "@/types/meme";
 
 const toggleLikeMeme = (id: string) => {
   console.log(`Toggled like for meme ${id}`);
@@ -10,20 +12,12 @@ const toggleLikeMeme = (id: string) => {
 };
 
 interface MemeCardProps {
-  meme: {
-    id: string | number;
-    url?: string;
-    imageUrl?: string;
-    title: string;
-    likes: number;
-  };
+  meme: Meme;
 }
 
 export default function MemeCard({ meme }: MemeCardProps) {
   const [isLiked, setIsLiked] = useState(false);
   const [likes, setLikes] = useState(meme.likes || 0);
-
-  const imageSource = meme.url || meme.imageUrl || "";
 
   const handleLike = () => {
     const newLikeStatus = !isLiked;
@@ -32,16 +26,31 @@ export default function MemeCard({ meme }: MemeCardProps) {
     toggleLikeMeme(meme.id.toString());
   };
 
+  // Check if the URL is a base64 data URL
+  const isBase64Image = meme.url.startsWith("data:");
+
   return (
     <div className="overflow-hidden group hover:shadow-lg transition-shadow duration-300 bg-background rounded-lg">
       <Link href={`/meme/${meme.id}`}>
         <div className="relative aspect-square overflow-hidden bg-muted">
-          <img
-            src={imageSource}
-            alt={meme.title || "Meme"}
-            className="w-full h-full object-cover transition-transform group-hover:scale-105 duration-300"
-            loading="lazy"
-          />
+          {isBase64Image ? (
+            // For base64 images, use a regular img tag
+            <img
+              src={meme.url}
+              alt={meme.title || "Meme"}
+              className="w-full h-full object-cover transition-transform group-hover:scale-105 duration-300"
+            />
+          ) : (
+            // For remote URLs, use Next.js Image component
+            <Image
+              src={meme.url}
+              alt={meme.title || "Meme"}
+              width={400}
+              height={400}
+              className="w-full h-full object-cover transition-transform group-hover:scale-105 duration-300"
+              priority={false}
+            />
+          )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         </div>
       </Link>

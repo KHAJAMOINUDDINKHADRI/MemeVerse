@@ -5,11 +5,12 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import MemeCard from "@/components/MemeCard";
 import { getMemesByCategory } from "@/lib/api";
+import { Meme } from "@/types/meme";
 
 const TRENDING_LIMIT = 8;
 
 export default function TrendingSection() {
-  const [trendingMemes, setTrendingMemes] = useState<any[]>([]);
+  const [trendingMemes, setTrendingMemes] = useState<Meme[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 

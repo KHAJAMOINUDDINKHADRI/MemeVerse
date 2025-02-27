@@ -5,10 +5,11 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Upload as UploadIcon, Image, Wand2 } from "lucide-react";
+import { Upload as UploadIcon, Image as ImageIcon, Wand2 } from "lucide-react";
 import { uploadMeme, generateMemeCaption } from "@/lib/api";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function Upload() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -50,9 +51,9 @@ export default function Upload() {
 
     setLoading(true);
     try {
-      const generatedCaption = await generateMemeCaption(title);
+      const generatedCaption = await generateMemeCaption();
       setCaption(generatedCaption);
-    } catch (error) {
+    } catch {
       toast({
         title: "Error",
         description: "Failed to generate caption",
@@ -81,7 +82,7 @@ export default function Upload() {
       });
 
       router.push(`/meme/${response.id}`);
-    } catch (error) {
+    } catch {
       toast({
         title: "Error",
         description: "Failed to upload meme",
@@ -104,9 +105,11 @@ export default function Upload() {
 
               {preview ? (
                 <div className="relative aspect-video rounded-lg overflow-hidden bg-muted">
-                  <img
+                  <Image
                     src={preview}
-                    alt="Preview"
+                    alt={title || "Meme preview"}
+                    width={800}
+                    height={600}
                     className="w-full h-full object-contain"
                   />
                   <Button
@@ -130,7 +133,7 @@ export default function Upload() {
                   onClick={() => fileInputRef.current?.click()}
                   className="border-2 border-dashed rounded-lg p-8 text-center cursor-pointer hover:border-primary transition-colors"
                 >
-                  <Image className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+                  <ImageIcon className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
                   <p className="text-sm text-muted-foreground mb-2">
                     Click to upload or drag and drop
                   </p>

@@ -3,9 +3,10 @@
 import { useState, useEffect } from "react";
 import { Trophy, Smile } from "lucide-react";
 import MemeCard from "@/components/MemeCard";
+import { Meme } from "@/types/meme";
 
 export default function Leaderboard() {
-  const [topMemes, setTopMemes] = useState<any[]>([]);
+  const [topMemes, setTopMemes] = useState<Meme[]>([]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -19,7 +20,7 @@ export default function Leaderboard() {
     );
 
     // Update memes with like counts
-    const memesWithLikes = uploadedMemes.map((meme: any) => {
+    const memesWithLikes = uploadedMemes.map((meme: Partial<Meme>) => {
       // Ensure we have the required fields
       return {
         ...meme,

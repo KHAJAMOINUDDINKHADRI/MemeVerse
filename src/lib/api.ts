@@ -1,12 +1,12 @@
 export const MEME_API = "https://api.imgflip.com";
 
-export interface Meme {
+// Import the Meme type from types/meme.ts
+import { Meme } from "@/types/meme";
+
+interface ImgFlipMeme {
   id: string;
   url: string;
-  title: string;
-  likes: number;
-  created_at?: string;
-  author?: string;
+  name: string;
 }
 
 export const getMemesByCategory = async (category: string): Promise<Meme[]> => {
@@ -19,13 +19,15 @@ export const getMemesByCategory = async (category: string): Promise<Meme[]> => {
     }
 
     // Transform the data to match our app's structure and ensure unique IDs
-    const memes = data.data.memes.map((template: any, index: number) => ({
-      id: `${template.id}_${index}`, // Make IDs unique by combining with index
-      url: template.url,
-      title: template.name,
-      likes: Math.floor(Math.random() * 1000),
-      created_at: new Date().toISOString(),
-    }));
+    const memes = data.data.memes.map(
+      (template: ImgFlipMeme, index: number) => ({
+        id: `${template.id}_${index}`, // Make IDs unique by combining with index
+        url: template.url,
+        title: template.name,
+        likes: Math.floor(Math.random() * 1000),
+        created_at: new Date().toISOString(),
+      })
+    );
 
     // Filter by category if needed
     if (category === "trending") {
@@ -117,7 +119,7 @@ export const uploadMeme = async (formData: FormData): Promise<Meme> => {
   });
 };
 
-export const generateMemeCaption = async (prompt: string) => {
+export const generateMemeCaption = async () => {
   // Simulated AI caption generation
   const captions = [
     "When you try your best but don't succeed...",
