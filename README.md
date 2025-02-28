@@ -1,6 +1,6 @@
 # Memeverse 🎭
 
-A modern meme sharing platform built with Next.js where users can upload, and generate captions for their favorite memes.
+A modern meme sharing platform built with Next.js where users can explore, upload, and generate captions for their favorite memes.
 
 ## 🚀 Features
 
